@@ -23,7 +23,7 @@ export default function Nav() {
     <header className="nav">
       <div className="container nav-inner">
         <Link href="/" className="brand" aria-label="McKenzie Cambridge Preparatory Academy — home">
-          <Crest size={46} />
+          <Crest height={48} />
           <span className="wordmark">
             <span className="wm-name">McKenzie Cambridge</span>
             <span className="wm-sub">Preparatory Academy</span>

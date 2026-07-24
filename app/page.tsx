@@ -8,7 +8,6 @@ import {
   Mail,
   type LucideIcon,
 } from "lucide-react";
-import Crest from "@/components/Crest";
 import Gallery from "@/components/sections/Gallery";
 import NewsletterBand from "@/components/sections/NewsletterBand";
 
@@ -66,7 +65,8 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-crest">
-            <Crest size={420} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/crest.png" alt="McKenzie Cambridge Preparatory Academy crest" className="hero-crest-img" draggable={false} />
           </div>
         </div>
         <div className="container" style={{ position: "relative", paddingBottom: 40 }}>

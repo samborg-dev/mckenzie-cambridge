@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="footer-grid">
           <div>
             <div className="brand">
-              <Crest size={44} />
+              <Crest height={46} />
               <span className="wordmark">
                 <span className="wm-name">McKenzie Cambridge</span>
                 <span className="wm-sub" style={{ color: "var(--gold-bright)" }}>
