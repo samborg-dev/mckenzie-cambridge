@@ -261,3 +261,163 @@ section { padding: 84px 0; }
 .page-hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 64px 0; }
 .prose { max-width: 720px; }
 .prose p { font-size: 1.05rem; }
+
+/* ---- Liquid glass "under construction" overlay ---- */
+@property --uc-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.uc-overlay {
+  position: fixed; inset: 0; z-index: 999;
+  display: grid; place-items: center;
+  padding: 24px;
+  background: var(--navy);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Light sources behind the glass — these are what the panel refracts. */
+.uc-bg { position: absolute; inset: -25%; z-index: 0; }
+.uc-blob {
+  position: absolute; border-radius: 50%;
+  filter: blur(64px); will-change: transform;
+}
+.uc-blob-1 {
+  width: 46vmax; height: 46vmax; left: 2%; top: 0;
+  background: radial-gradient(circle at 34% 34%, rgba(228,195,116,0.85), rgba(228,195,116,0) 68%);
+  animation: uc-drift-a 24s ease-in-out infinite;
+}
+.uc-blob-2 {
+  width: 42vmax; height: 42vmax; right: 0; top: 12%;
+  background: radial-gradient(circle at 60% 40%, rgba(74,110,225,0.75), rgba(74,110,225,0) 68%);
+  animation: uc-drift-b 30s ease-in-out infinite;
+}
+.uc-blob-3 {
+  width: 50vmax; height: 50vmax; left: 22%; bottom: -8%;
+  background: radial-gradient(circle at 45% 55%, rgba(255,255,255,0.4), rgba(255,255,255,0) 65%);
+  animation: uc-drift-c 27s ease-in-out infinite;
+}
+
+@keyframes uc-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(12%, 9%, 0) scale(1.14); }
+}
+@keyframes uc-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.08); }
+  50%      { transform: translate3d(-14%, 12%, 0) scale(0.92); }
+}
+@keyframes uc-drift-c {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(0.95); }
+  50%      { transform: translate3d(9%, -11%, 0) scale(1.12); }
+}
+
+/* The glass panel */
+.uc-card {
+  position: relative; z-index: 1;
+  width: min(660px, 100%);
+  padding: clamp(36px, 6vw, 62px) clamp(26px, 5vw, 58px);
+  text-align: center;
+  border-radius: 30px;
+  overflow: hidden;
+  background: linear-gradient(
+    150deg,
+    rgba(255,255,255,0.17),
+    rgba(255,255,255,0.05) 44%,
+    rgba(255,255,255,0.11)
+  );
+  backdrop-filter: blur(26px) saturate(180%);
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    0 40px 90px rgba(4, 9, 28, 0.55),
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    inset 0 -1px 0 rgba(255,255,255,0.1),
+    inset 0 0 44px rgba(255,255,255,0.06);
+}
+
+/* Lit 1px rim — the edge where light catches the glass */
+.uc-card::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  border-radius: inherit; padding: 1px;
+  background: conic-gradient(
+    from var(--uc-angle),
+    rgba(255,255,255,0.55),
+    rgba(228,195,116,0.6) 25%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(228,195,116,0.35) 75%,
+    rgba(255,255,255,0.55)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: uc-rim 14s linear infinite;
+}
+@keyframes uc-rim {
+  to { --uc-angle: 360deg; }
+}
+
+.uc-card > * { position: relative; z-index: 1; }
+
+.uc-crest {
+  margin: 0 auto 24px;
+  filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.45));
+}
+
+.uc-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-bright);
+  margin-bottom: 14px;
+}
+
+.uc-title {
+  color: #fff;
+  margin-bottom: 14px;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35);
+}
+
+.uc-sub {
+  color: rgba(255,255,255,0.78);
+  font-size: 1.05rem;
+  max-width: 42ch;
+  margin: 0 auto;
+}
+
+.uc-bar {
+  position: relative; overflow: hidden;
+  width: min(280px, 70%); height: 4px;
+  margin: 32px auto 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.14);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.uc-bar::after {
+  content: ""; position: absolute; inset: 0; width: 42%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+  animation: uc-load 2.6s ease-in-out infinite;
+}
+@keyframes uc-load {
+  0%   { transform: translateX(-110%); }
+  100% { transform: translateX(340%); }
+}
+
+.uc-motto {
+  display: grid; gap: 3px;
+  margin-top: 30px; padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.14);
+}
+.uc-motto .lat { font-family: var(--display); font-style: italic; font-size: 1.05rem; color: var(--gold-bright); }
+.uc-motto .eng { font-size: 0.88rem; color: rgba(255,255,255,0.62); font-style: italic; }
+
+@media (max-width: 600px) {
+  .uc-card { border-radius: 24px; backdrop-filter: blur(18px) saturate(170%); -webkit-backdrop-filter: blur(18px) saturate(170%); }
+  .uc-blob { filter: blur(48px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uc-blob, .uc-card::after, .uc-bar::after { animation: none; }
+}

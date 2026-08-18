@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import UnderConstruction from "@/components/UnderConstruction";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Nav />
         <main>{children}</main>
         <Footer />
+        <UnderConstruction />
       </body>
     </html>
   );
